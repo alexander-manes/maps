@@ -15,9 +15,7 @@ def map_and_filter(s, map_fn, filter_fn):
     >>> map_and_filter([1, 2, 3, 4, 5], square, is_odd)
     [1, 9, 25]
     """
-    # BEGIN Question 0
     return [map_fn(x) for x in s if filter_fn(x)]
-    # END Question 0
 
 def key_of_min_value(d):
     """Returns the key in a dict d that corresponds to the minimum value of d.
@@ -28,9 +26,7 @@ def key_of_min_value(d):
     >>> key_of_min_value(letters)
     'c'
     """
-    # BEGIN Question 0
     return min(d, key = lambda x: d[x])
-    # END Question 0
 
 def zip(*sequences):
     """Returns a list of lists, where the i-th list contains the i-th
@@ -60,9 +56,7 @@ def enumerate(s, start=0):
     >>> enumerate('five', 5)
     [[5, 'f'], [6, 'i'], [7, 'v'], [8, 'e']]
     """
-    # BEGIN Question 0
     return [[i + start,s[i]] for i in range(0, len(s))]
-    # END Question 0
 
 def distance(pos1, pos2):
     """Returns the Euclidean distance between pos1 and pos2, which are pairs.
@@ -80,10 +74,8 @@ def mean(s):
     >>> mean([0, -3, 2, -1])
     -0.5
     """
-    # BEGIN Question 1
     assert len(s) != 0
     total = 0
     for elem in s:
         total += elem
     return total / len(s)
-    # END Question 1
