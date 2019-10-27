@@ -7,7 +7,7 @@ from utils import distance, mean, zip, enumerate, sample
 from visualize import draw_map
 
 ##################################
-# Phase 2: Unsupervised Learning #
+# Unsupervised Learning #
 ##################################
 
 
@@ -18,9 +18,7 @@ def find_closest(location, centroids):
     >>> find_closest([3.0, 4.0], [[0.0, 0.0], [2.0, 3.0], [4.0, 3.0], [5.0, 5.0]])
     [2.0, 3.0]
     """
-    # BEGIN Question 3
     return min(centroids, key = lambda x: distance(location, x))
-    # END Question 3
 
 
 def group_by_first(pairs):
@@ -47,16 +45,12 @@ def group_by_centroid(restaurants, centroids):
     restaurants should appear once in the result, along with the other
     restaurants closest to the same centroid.
     """
-    # BEGIN Question 4
     return group_by_first([[find_closest(restaurant_location(i), centroids), i] for i in restaurants])
-    # END Question 4
 
 
 def find_centroid(cluster):
     """Return the centroid of the locations of the restaurants in cluster."""
-    # BEGIN Question 5
     return [mean([restaurant_location(i)[0] for i in cluster]), mean([restaurant_location(i)[1] for i in cluster])]
-    # END Question 5
 
 
 def k_means(restaurants, k, max_updates=100):
@@ -69,16 +63,14 @@ def k_means(restaurants, k, max_updates=100):
 
     while old_centroids != centroids and n < max_updates:
         old_centroids = centroids
-        # BEGIN Question 6
         cluster = group_by_centroid(restaurants, centroids)
         centroids = [find_centroid(i) for i in cluster]
-        # END Question 6
         n += 1
     return centroids
 
 
 ################################
-# Phase 3: Supervised Learning #
+# Supervised Learning #
 ################################
 
 
@@ -95,14 +87,12 @@ def find_predictor(user, restaurants, feature_fn):
     xs = [feature_fn(r) for r in restaurants]
     ys = [user_rating(user, restaurant_name(r)) for r in restaurants]
 
-    # BEGIN Question 7
     Sxx = sum([(x - mean(xs)) ** 2 for x in xs])
     Syy = sum([(y - mean(ys)) ** 2 for y in ys])
     Sxy = sum([(x - mean(xs)) * (y - mean(ys)) for x,y in zip(xs, ys)])
     b = Sxy / Sxx
     a = mean(ys) - b * mean(xs)
     r_squared = (Sxy ** 2) / (Sxx * Syy)
-    # END Question 7
 
     def predictor(restaurant):
         return b * feature_fn(restaurant) + a
@@ -120,9 +110,7 @@ def best_predictor(user, restaurants, feature_fns):
     feature_fns -- A sequence of functions that each takes a restaurant
     """
     reviewed = user_reviewed_restaurants(user, restaurants)
-    # BEGIN Question 8
     return find_predictor(user, reviewed, max(feature_fns, key = lambda r: find_predictor(user, reviewed, r)[1]))[0]
-    # END Question 8
 
 
 def rate_all(user, restaurants, feature_fns):
@@ -136,11 +124,10 @@ def rate_all(user, restaurants, feature_fns):
     """
     predictor = best_predictor(user, ALL_RESTAURANTS, feature_fns)
     reviewed = user_reviewed_restaurants(user, restaurants)
-    # BEGIN Question 9
+
     ratings = {restaurant_name(r): user_rating(user, restaurant_name(r)) for r in reviewed}
     ratings.update({restaurant_name(r): predictor(r) for r in restaurants if not ratings.get(restaurant_name(r), 0)})
     return ratings
-    # END Question 9
 
 
 def search(query, restaurants):
@@ -150,14 +137,11 @@ def search(query, restaurants):
     query -- A string
     restaurants -- A sequence of restaurants
     """
-    # BEGIN Question 10
     list = []
     for r in restaurants:
         if query in restaurant_categories(r):
             list.append(r)
     return list
-    # END Question 10
-
 
 def feature_set():
     """Return a sequence of feature functions."""
